@@ -1,0 +1,109 @@
+.home {
+  padding: 2rem;
+}
+
+.home__hero {
+  max-width: 900px;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.home__title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.home__subtitle {
+  font-size: 1.05rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.home__actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.6rem 1.4rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.btn--primary {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn--secondary {
+  border: 1px solid #2563eb;
+  color: #2563eb;
+}
+
+.btn--secondary:hover {
+  background-color: #eff6ff;
+}
+
+.home__section {
+  max-width: 1000px;
+  margin: 0 auto 3.5rem;
+}
+
+.home__section--alt {
+  background-color: #f9fafb;
+  padding: 2.5rem 2rem;
+  border-radius: 8px;
+}
+
+.home__heading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.home__text {
+  font-size: 0.95rem;
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+}
+
+.home__list {
+  padding-left: 1.2rem;
+  color: #374151;
+}
+
+.home__list li {
+  margin-bottom: 0.5rem;
+}
+
+.home__features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.feature h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.4rem;
+}
+
+.feature p {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+}

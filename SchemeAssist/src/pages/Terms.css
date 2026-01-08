@@ -1,0 +1,57 @@
+.terms {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.terms__header {
+  margin-bottom: 3rem;
+}
+
+.terms__header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.6rem;
+}
+
+.terms__intro {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.terms__section {
+  margin-bottom: 2.8rem;
+}
+
+.terms__section--alt {
+  background-color: #f9fafb;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.terms__section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.8rem;
+}
+
+.terms__section p {
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 0.7rem;
+}
+
+.terms__list {
+  padding-left: 1.2rem;
+  color: #374151;
+  margin-bottom: 0.8rem;
+}
+
+.terms__list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}

@@ -4,6 +4,9 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Schemes from "./pages/Schemes";
+import Disclaimer from "./pages/Disclaimer";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms.";
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/schemes" element={<Schemes />} />
+        <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
       </Routes>
       <Footer />
     </>
