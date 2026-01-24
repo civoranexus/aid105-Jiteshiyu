@@ -1,13 +1,26 @@
-import Scheme from "../models/Scheme.js";
+const Scheme = require("../models/Scheme");
+const { syncSchemesFromMyScheme } = require("../services/schemeSyncService");
 
-export const getAllSchemes = async (req, res) => {
+exports.getSchemes = async (req, res) => {
   try {
-    const schemes = await Scheme.find().sort({ createdAt: -1 });
-    res.status(200).json(schemes);
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to fetch schemes",
-      error: error.message,
-    });
+    const filters = {};
+
+    if (req.query.state) filters.state = req.query.state;
+    if (req.query.category) filters.category = req.query.category;
+
+    const schemes = await Scheme.find(filters).sort({ name: 1 });
+
+    res.json(schemes);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch schemes" });
+  }
+};
+
+exports.syncSchemes = async (req, res) => {
+  try {
+    await syncSchemesFromMyScheme();
+    res.json({ message: "Schemes synced successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Scheme sync failed" });
   }
 };

@@ -1,33 +1,32 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const schemeSchema = new mongoose.Schema(
   {
+    schemeCode: {
+      type: String,
+      required: true,
+      unique: true, 
+    },
     name: {
       type: String,
       required: true,
     },
-    description: {
+    ministry: String,
+    description: String,
+    benefits: String,
+    eligibility: String,
+    state: {
       type: String,
-      required: true,
+      default: "All",
     },
-    targetGroup: {
+    category: String,
+    source: {
       type: String,
+      default: "MyScheme",
     },
-    eligibility: {
-      incomeRange: String,
-      ageGroup: String,
-      occupation: String,
-      category: String,
-      location: String,
-    },
-    benefits: {
-      type: String,
-    },
-    officialLink: {
-      type: String,
-    },
+    lastSyncedAt: Date,
   },
   { timestamps: true }
 );
 
-export default mongoose.model("Scheme", schemeSchema);
+module.exports = mongoose.model("Scheme", schemeSchema);

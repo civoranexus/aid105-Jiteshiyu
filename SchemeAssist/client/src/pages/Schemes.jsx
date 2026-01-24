@@ -42,31 +42,25 @@ function Schemes() {
       {!loading && !error && schemes.length > 0 && (
         <div className="schemes__list">
           {schemes.map((scheme) => (
-            <div key={scheme._id} className="scheme-card">
+            <div key={scheme.schemeCode} className="scheme-card">
               <h2 className="scheme-card__title">{scheme.name}</h2>
 
-              <p className="scheme-card__description">
-                {scheme.description}
-              </p>
+              {scheme.ministry && (
+                <p className="scheme-card__ministry">
+                  <strong>Ministry:</strong> {scheme.ministry}
+                </p>
+              )}
+
+              {scheme.description && (
+                <p className="scheme-card__description">
+                  {scheme.description}
+                </p>
+              )}
 
               {scheme.eligibility && (
-                <div className="scheme-card__eligibility">
-                  <strong>Eligibility:</strong>
-                  <ul>
-                    {scheme.eligibility.incomeRange && (
-                      <li>Income: {scheme.eligibility.incomeRange}</li>
-                    )}
-                    {scheme.eligibility.ageGroup && (
-                      <li>Age: {scheme.eligibility.ageGroup}</li>
-                    )}
-                    {scheme.eligibility.category && (
-                      <li>Category: {scheme.eligibility.category}</li>
-                    )}
-                    {scheme.eligibility.location && (
-                      <li>Location: {scheme.eligibility.location}</li>
-                    )}
-                  </ul>
-                </div>
+                <p className="scheme-card__eligibility">
+                  <strong>Eligibility:</strong> {scheme.eligibility}
+                </p>
               )}
 
               {scheme.benefits && (
@@ -75,16 +69,19 @@ function Schemes() {
                 </p>
               )}
 
-              {scheme.officialLink && (
-                <a
-                  href={scheme.officialLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="scheme-card__link"
-                >
-                  Official Website
-                </a>
-              )}
+              <div className="scheme-card__meta">
+                {scheme.category && (
+                  <span className="scheme-tag">
+                    Category: {scheme.category}
+                  </span>
+                )}
+
+                {scheme.state && (
+                  <span className="scheme-tag">
+                    State: {scheme.state}
+                  </span>
+                )}
+              </div>
             </div>
           ))}
         </div>
