@@ -16,7 +16,8 @@ app.get("/", (req, res) => {
   res.json({ message: "SchemeAssist API running" });
 });
 
-app.use("/api/schemes", schemeRoutes);
+app.use("/api/schemes", require("./routes/authRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
