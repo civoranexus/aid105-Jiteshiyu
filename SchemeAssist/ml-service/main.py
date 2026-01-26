@@ -1,36 +1,34 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
-from inference import predict
+from pydantic import BaseModel
+from typing import List, Dict
+from inference import rank_schemes
 
-app = FastAPI(title="ML Recommendation Service")
+app = FastAPI(title="SchemeAssist ML Service")
 
-class UserInput(BaseModel):
-    age: int = Field(..., example=30)
-    income: int = Field(..., example=700000)
-    risk_score: int = Field(..., example=2)
+class UserProfile(BaseModel):
+    age: int
+    annual_income: int
+    category: str
+    state: str
+    education: str
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
+class SchemeInput(BaseModel):
+    scheme_id: str
+    features: Dict
+
+class PredictionRequest(BaseModel):
+    user_profile: UserProfile
+    eligible_schemes: List[SchemeInput]
 
 @app.post("/predict")
-def get_prediction(data: UserInput):
+def predict(request: PredictionRequest):
     try:
-        result = predict(
-            age=data.age,
-            income=data.income,
-            risk_score=data.risk_score
+        ranked = rank_schemes(
+            user_profile=request.user_profile.dict(),
+            eligible_schemes=[s.dict() for s in request.eligible_schemes]
         )
-        return {
-            "success": True,
-            "data": result
-        }
 
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        return {"ranked_schemes": ranked}
 
-    except Exception:
-        raise HTTPException(
-            status_code=500,
-            detail="Internal ML service error"
-        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Prediction failed")

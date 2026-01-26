@@ -2,7 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 import schemeRoutes from "./routes/schemeRoutes.js";
+import recommendationRoutes from "./routes/recommendationRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -16,8 +18,9 @@ app.get("/", (req, res) => {
   res.json({ message: "SchemeAssist API running" });
 });
 
-app.use("/api/schemes", require("./routes/authRoutes"));
-app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/auth", authRoutes);
+app.use("/api/schemes", schemeRoutes);
+app.use("/api/recommendations", recommendationRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
