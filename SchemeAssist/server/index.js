@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import schemeRoutes from "./routes/schemeRoutes.js";
 import recommendationRoutes from "./routes/recommendationRoutes.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 connectDB();
@@ -13,6 +14,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use(errorHandler);
 
 app.get("/", (req, res) => {
   res.json({ message: "SchemeAssist API running" });

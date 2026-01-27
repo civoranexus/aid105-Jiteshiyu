@@ -52,8 +52,8 @@ export const getRecommendations = async (req, res) => {
 
     return res.json({ recommendations });
   } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Recommendation service unavailable" });
-  }
+      err.statusCode = 500;
+      err.message = "Recommendation service unavailable";
+      throw err;
+    }
 };

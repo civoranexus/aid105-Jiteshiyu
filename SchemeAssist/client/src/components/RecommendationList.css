@@ -1,0 +1,27 @@
+.recommendation-list {
+  margin-top: 24px;
+}
+
+.scheme-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background-color: #fafafa;
+}
+
+.scheme-card h3 {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.scheme-card p {
+  font-size: 14px;
+  color: #374151;
+}
+
+.empty-text {
+  margin-top: 20px;
+  text-align: center;
+  color: #6b7280;
+}

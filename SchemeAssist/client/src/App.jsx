@@ -7,6 +7,7 @@ import Schemes from "./pages/Schemes";
 import Disclaimer from "./pages/Disclaimer";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms.";
+import Recommendations from "./pages/Recommendations";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/recommendations" element={<Recommendations />} />
       </Routes>
       <Footer />
     </>
