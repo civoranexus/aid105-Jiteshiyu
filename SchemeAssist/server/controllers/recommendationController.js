@@ -42,11 +42,14 @@ export const getRecommendations = async (req, res) => {
         (s) => s._id.toString() === r.scheme_id
       );
 
+      const breakdown = getEligibilityBreakdown(scheme, req.body);
+
       return {
         scheme_id: scheme._id,
         scheme_name: scheme.name,
         score: r.score,
         reason: r.explanation,
+        eligibility: breakdown,
       };
     });
 

@@ -25,3 +25,22 @@
   text-align: center;
   color: #6b7280;
 }
+
+.eligibility-section {
+  margin-top: 10px;
+}
+
+.eligibility-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.matched li {
+  color: #166534;
+  font-size: 14px;
+}
+
+.unmet li {
+  color: #b91c1c;
+  font-size: 14px;
+}

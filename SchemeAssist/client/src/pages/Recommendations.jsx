@@ -3,6 +3,8 @@ import api from "../services/api";
 import RecommendationList from "../components/RecommendationList";
 import "./Recommendations.css";
 
+import { CATEGORIES, STATES, EDUCATION_LEVELS } from "../constants/profileOptions";
+
 const Recommendations = () => {
   const [form, setForm] = useState({
     age: "",
@@ -14,7 +16,7 @@ const Recommendations = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [recommendations, setRecommendations] = useState(null); 
+  const [recommendations, setRecommendations] = useState(null);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,6 +24,17 @@ const Recommendations = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      !form.age ||
+      !form.annual_income ||
+      !form.category ||
+      !form.state ||
+      !form.education
+    ) {
+      setError("Please fill all fields");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -41,7 +54,6 @@ const Recommendations = () => {
       setError(
         err.response?.data?.message || "Service temporarily unavailable"
       );
-      setRecommendations([]);
     } finally {
       setLoading(false);
     }
@@ -53,43 +65,67 @@ const Recommendations = () => {
 
       <form className="recommendation-form" onSubmit={handleSubmit}>
         <input
+          type="number"
           name="age"
           placeholder="Age"
           value={form.age}
           onChange={handleChange}
           required
         />
+
         <input
+          type="number"
           name="annual_income"
-          placeholder="Annual Income"
+          placeholder="Annual Income (₹)"
           value={form.annual_income}
           onChange={handleChange}
           required
         />
-        <input
+
+        <select
           name="category"
-          placeholder="Category"
           value={form.category}
           onChange={handleChange}
           required
-        />
-        <input
-          name="state"
-          placeholder="State"
-          value={form.state}
-          onChange={handleChange}
-          required
-        />
-        <input
+        >
+          <option value="">Select Category</option>
+          {CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+
+        <select
           name="education"
-          placeholder="Education"
           value={form.education}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Select Education</option>
+          {EDUCATION_LEVELS.map((edu) => (
+            <option key={edu} value={edu}>
+              {edu}
+            </option>
+          ))}
+        </select>
+
+        <select
+          name="state"
+          value={form.state}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select State</option>
+          {STATES.map((state) => (
+            <option key={state} value={state}>
+              {state}
+            </option>
+          ))}
+        </select>
 
         <button type="submit" disabled={loading}>
-          {loading ? "Loading..." : "Get Recommendations"}
+          {loading ? "Finding Schemes..." : "Get Recommendations"}
         </button>
       </form>
 
