@@ -1,0 +1,52 @@
+.application-section {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background-color: #fafafa;
+}
+
+.application-section h4 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.application-section p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.application-section ol {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.application-section ol li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.application-section ul {
+  padding-left: 18px;
+  margin-bottom: 12px;
+}
+
+.application-section ul li {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.application-section a {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.application-section a:hover {
+  text-decoration: underline;
+}

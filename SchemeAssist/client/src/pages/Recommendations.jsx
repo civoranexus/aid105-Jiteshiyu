@@ -3,7 +3,9 @@ import api from "../services/api";
 import RecommendationList from "../components/RecommendationList";
 import "./Recommendations.css";
 
-import { CATEGORIES, STATES, EDUCATION_LEVELS } from "../constants/profileOptions";
+import { CATEGORIES } from "../constants/categories";
+import { EDUCATION_LEVELS } from "../constants/educationLevels";
+import { STATES } from "../constants/states";
 
 const Recommendations = () => {
   const [form, setForm] = useState({

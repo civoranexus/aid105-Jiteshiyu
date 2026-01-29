@@ -1,11 +1,3 @@
-export const CATEGORIES = [
-  "General",
-  "OBC",
-  "SC",
-  "ST",
-  "EWS",
-];
-
 export const STATES = [
   // States
   "Andhra Pradesh",
@@ -46,13 +38,4 @@ export const STATES = [
   "Ladakh",
   "Lakshadweep",
   "Puducherry",
-];
-
-export const EDUCATION_LEVELS = [
-  "Below 10th",
-  "10th Pass",
-  "12th Pass",
-  "Diploma",
-  "Graduate",
-  "Post Graduate",
 ];
