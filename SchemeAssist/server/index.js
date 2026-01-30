@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import schemeRoutes from "./routes/schemeRoutes.js";
 import recommendationRoutes from "./routes/recommendationRoutes.js";
+import comparisonRoutes from "./routes/comparisonRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/schemes", schemeRoutes);
 app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/compare", comparisonRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
