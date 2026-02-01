@@ -14,6 +14,12 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
     },
+    watchlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Scheme",
+      },
+    ],
   },
   { timestamps: true }
 );

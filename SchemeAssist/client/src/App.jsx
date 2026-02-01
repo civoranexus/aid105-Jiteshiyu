@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 
 import Recommendations from "./pages/Recommendations";
 import ComparePage from "./pages/ComparePage";
+import Watchlist from "./pages/Watchlist";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/recommendations" element={<Recommendations />} />
         <Route path="/compare" element={<ComparePage />} />
+        <Route path="/watchlist" element={<Watchlist />} />
       </Routes>
 
       <Footer />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchSchemes } from "../services/api";
+import { addToWatchlistApi } from "../services/watchlistApi";
 import "./Schemes.css";
 
 function Schemes() {
@@ -23,6 +24,17 @@ function Schemes() {
     loadSchemes();
   }, []);
 
+  const handleSave = async (schemeId) => {
+    try {
+      await addToWatchlistApi(schemeId);
+      alert("Added to watchlist");
+    } catch (err) {
+      alert(
+        err.response?.data?.message || "Failed to add to watchlist"
+      );
+    }
+  };
+
   return (
     <main className="schemes">
       <h1>Available Government Schemes</h1>
@@ -42,29 +54,21 @@ function Schemes() {
       {!loading && !error && schemes.length > 0 && (
         <div className="schemes__list">
           {schemes.map((scheme) => (
-            <div key={scheme.schemeCode} className="scheme-card">
+            <div key={scheme._id} className="scheme-card">
               <h2 className="scheme-card__title">{scheme.name}</h2>
 
               {scheme.ministry && (
-                <p className="scheme-card__ministry">
+                <p>
                   <strong>Ministry:</strong> {scheme.ministry}
                 </p>
               )}
 
               {scheme.description && (
-                <p className="scheme-card__description">
-                  {scheme.description}
-                </p>
-              )}
-
-              {scheme.eligibility && (
-                <p className="scheme-card__eligibility">
-                  <strong>Eligibility:</strong> {scheme.eligibility}
-                </p>
+                <p>{scheme.description}</p>
               )}
 
               {scheme.benefits && (
-                <p className="scheme-card__benefits">
+                <p>
                   <strong>Benefits:</strong> {scheme.benefits}
                 </p>
               )}
@@ -82,6 +86,13 @@ function Schemes() {
                   </span>
                 )}
               </div>
+
+              <button
+                className="scheme-card__save"
+                onClick={() => handleSave(scheme._id)}
+              >
+                Save to Watchlist
+              </button>
             </div>
           ))}
         </div>

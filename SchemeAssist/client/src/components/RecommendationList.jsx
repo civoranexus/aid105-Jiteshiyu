@@ -1,3 +1,4 @@
+import { addToWatchlistApi } from "../services/watchlistApi";
 import "./RecommendationList.css";
 
 const RecommendationList = ({ recommendations }) => {
@@ -6,6 +7,17 @@ const RecommendationList = ({ recommendations }) => {
   if (recommendations.length === 0) {
     return <p className="empty-text">No schemes found for your profile.</p>;
   }
+
+  const handleSave = async (schemeId) => {
+    try {
+      await addToWatchlistApi(schemeId);
+      alert("Added to watchlist");
+    } catch (err) {
+      alert(
+        err.response?.data?.message || "Failed to add to watchlist"
+      );
+    }
+  };
 
   return (
     <div className="recommendation-list">
@@ -34,6 +46,13 @@ const RecommendationList = ({ recommendations }) => {
               </ul>
             )}
           </div>
+
+          <button
+            className="scheme-card__save"
+            onClick={() => handleSave(rec.scheme_id)}
+          >
+            Save to Watchlist
+          </button>
         </div>
       ))}
     </div>
