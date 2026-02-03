@@ -1,0 +1,52 @@
+import { useEffect, useState } from "react";
+import {
+  fetchAlertsApi,
+  markAlertReadApi,
+} from "../services/alertApi";
+import "./Alerts.css";
+
+const Alerts = () => {
+  const [alerts, setAlerts] = useState([]);
+
+  useEffect(() => {
+    fetchAlertsApi().then((res) => setAlerts(res.data));
+  }, []);
+
+  const markRead = async (id) => {
+    await markAlertReadApi(id);
+    setAlerts((prev) =>
+      prev.map((a) =>
+        a._id === id ? { ...a, isRead: true } : a
+      )
+    );
+  };
+
+  if (!alerts.length) {
+    return <p>No alerts yet.</p>;
+  }
+
+  return (
+    <div className="alerts-container">
+      <h2>Alerts</h2>
+
+      {alerts.map((alert) => (
+        <div
+          key={alert._id}
+          className={`alert-item ${
+            alert.isRead ? "read" : "unread"
+          }`}
+        >
+          <p>{alert.message}</p>
+
+          {!alert.isRead && (
+            <button onClick={() => markRead(alert._id)}>
+              Mark as read
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Alerts;

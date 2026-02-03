@@ -17,6 +17,7 @@ import Recommendations from "./pages/Recommendations";
 import ComparePage from "./pages/ComparePage";
 import Watchlist from "./pages/Watchlist";
 import Progress from "./pages/Progress";
+import Alerts from "./pages/Alerts";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/compare" element={<ComparePage />} />
         <Route path="/watchlist" element={<Watchlist />} />
         <Route path="/progress" element={<Progress />} />
+        <Route path="/alerts" element={<Alerts />} />
       </Routes>
 
       <Footer />

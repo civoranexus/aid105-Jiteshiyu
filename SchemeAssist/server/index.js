@@ -8,6 +8,7 @@ import recommendationRoutes from "./routes/recommendationRoutes.js";
 import comparisonRoutes from "./routes/comparisonRoutes.js";
 import watchlistRoutes from "./routes/watchlistRoutes.js";
 import progressRoutes from "./routes/progressRoutes.js";
+import alertRoutes from "./routes/alertRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -30,6 +31,7 @@ app.use("/api/recommendations", recommendationRoutes);
 app.use("/api/compare", comparisonRoutes);
 app.use("/api/watchlist", watchlistRoutes);
 app.use("/api/progress", progressRoutes);
+app.use("/api/alerts", alertRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
