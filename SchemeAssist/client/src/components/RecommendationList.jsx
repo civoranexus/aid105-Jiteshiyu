@@ -1,4 +1,5 @@
 import { addToWatchlistApi } from "../services/watchlistApi";
+import FeedbackButtons from "./FeedbackButtons";
 import "./RecommendationList.css";
 
 const RecommendationList = ({ recommendations }) => {
@@ -13,48 +14,84 @@ const RecommendationList = ({ recommendations }) => {
       await addToWatchlistApi(schemeId);
       alert("Added to watchlist");
     } catch (err) {
-      alert(
-        err.response?.data?.message || "Failed to add to watchlist"
-      );
+      alert(err.response?.data?.message || "Failed to add to watchlist");
     }
   };
 
   return (
     <div className="recommendation-list">
-      {recommendations.map((rec) => (
-        <div key={rec.scheme_id} className="scheme-card">
-          <h3>{rec.scheme_name}</h3>
+      {recommendations.map((rec) => {
+        const eligibility = rec.eligibility || { matched: [], unmet: [] };
+        const explainability = Array.isArray(rec.explainability)
+          ? rec.explainability
+          : [];
 
-          <p>
-            <strong>Why recommended:</strong> {rec.reason}
-          </p>
+        return (
+          <div key={rec.scheme_id} className="scheme-card">
+            <h3>{rec.scheme_name}</h3>
 
-          <div className="eligibility-section">
-            <p className="eligibility-title">Eligibility Check</p>
+            <p>
+              <strong>Why recommended:</strong>{" "}
+              {rec.reason || "No explanation provided"}
+            </p>
 
-            <ul className="matched">
-              {rec.eligibility.matched.map((item, i) => (
-                <li key={i}>✅ {item}</li>
-              ))}
-            </ul>
+            <div className="eligibility-section">
+              <p className="eligibility-title">Eligibility Check</p>
 
-            {rec.eligibility.unmet.length > 0 && (
-              <ul className="unmet">
-                {rec.eligibility.unmet.map((item, i) => (
-                  <li key={i}>❌ {item}</li>
-                ))}
-              </ul>
+              {eligibility.matched.length > 0 && (
+                <ul className="matched">
+                  {eligibility.matched.map((item, i) => (
+                    <li key={i}>✅ {item}</li>
+                  ))}
+                </ul>
+              )}
+
+              {eligibility.unmet.length > 0 && (
+                <ul className="unmet">
+                  {eligibility.unmet.map((item, i) => (
+                    <li key={i}>❌ {item}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* ✅ Explainability */}
+            {explainability.length > 0 && (
+              <div className="explainability-box">
+                <p className="match-score">
+                  Overall Match:{" "}
+                  <strong>{rec.overall_match ?? "N/A"}%</strong>
+                </p>
+
+                <ul>
+                  {explainability.map((f, i) => (
+                    <li
+                      key={i}
+                      className={`factor ${
+                        f.match_level
+                          ? f.match_level.toLowerCase()
+                          : "neutral"
+                      }`}
+                    >
+                      <p>
+                        <strong>{f.factor}</strong> ({f.contribution}%)
+                      </p>
+                      <p className="factor-msg">{f.message}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
-          </div>
 
-          <button
-            className="scheme-card__save"
-            onClick={() => handleSave(rec.scheme_id)}
-          >
-            Save to Watchlist
-          </button>
-        </div>
-      ))}
+            <button
+              className="scheme-card__save"
+              onClick={() => handleSave(rec.scheme_id)}
+            >
+              Save to Watchlist
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 };

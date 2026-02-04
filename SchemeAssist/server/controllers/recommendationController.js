@@ -1,12 +1,17 @@
 import axios from "axios";
 import { recommendationSchema } from "../validators/recommendationValidator.js";
 import { filterEligibleSchemes } from "../utils/eligibility.js";
+import { generateExplainabilityReport } from "../utils/explainabilityEngine.js";
+import { getEligibilityBreakdown } from "../utils/breakdown.js";
+import { getSchemeFeedbackStats } from "./feedbackController.js";
 import Scheme from "../models/Scheme.js";
 
 export const getRecommendations = async (req, res) => {
   const { error } = recommendationSchema.validate(req.body);
   if (error) {
-    return res.status(400).json({ message: error.details[0].message });
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
   }
 
   try {
@@ -37,26 +42,42 @@ export const getRecommendations = async (req, res) => {
 
     const ranked = mlResponse.data.ranked_schemes;
 
-    const recommendations = ranked.map((r) => {
-      const scheme = eligibleSchemes.find(
-        (s) => s._id.toString() === r.scheme_id
-      );
+    const recommendations = ranked
+      .map((r) => {
+        const scheme = eligibleSchemes.find(
+          (s) => s._id.toString() === r.scheme_id
+        );
 
-      const breakdown = getEligibilityBreakdown(scheme, req.body);
+        if (!scheme) return null;
 
-      return {
-        scheme_id: scheme._id,
-        scheme_name: scheme.name,
-        score: r.score,
-        reason: r.explanation,
-        eligibility: breakdown,
-      };
-    });
+        const breakdown = getEligibilityBreakdown(scheme, req.body);
+
+        const explainReport = generateExplainabilityReport(
+          scheme,
+          req.body
+        );
+
+        return {
+          scheme_id: scheme._id,
+          scheme_name: scheme.name,
+          score: r.score,
+
+          reason: explainReport.summary,
+          overall_match: explainReport.overall_match,
+          explainability: explainReport.factors,
+
+          eligibility: breakdown,
+        };
+      })
+      .filter(Boolean);
 
     return res.json({ recommendations });
+
   } catch (err) {
-      err.statusCode = 500;
-      err.message = "Recommendation service unavailable";
-      throw err;
-    }
+    console.error("Recommendation Error:", err.message);
+
+    return res.status(500).json({
+      message: "Recommendation service unavailable",
+    });
+  }
 };
