@@ -76,3 +76,35 @@
 .factor.low {
   background: #fef2f2;
 }
+
+.feedback-container {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.feedback-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.feedback-btn:hover {
+  transform: scale(1.03);
+}
+
+.feedback-btn.helpful:hover {
+  border-color: green;
+  color: green;
+}
+
+.feedback-btn.not-helpful:hover {
+  border-color: red;
+  color: red;
+}

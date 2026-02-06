@@ -1,31 +1,41 @@
 import { useState } from "react";
-import { registerUser } from "../services/api";
+import toast from "react-hot-toast";
+
+import StatusBlock from "../components/StatusBlock";
+import { registerUser } from "../services/API";
+
 import "./Register.css";
 
 function Register() {
   const [name, setName] = useState("");
+
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name.trim()) {
-      setError("Name is required");
+      toast.error("Name is required");
       return;
     }
 
     setLoading(true);
-    setError("");
+    setError(null);
     setSuccess("");
 
     try {
       const res = await registerUser(name);
+
+      toast.success("Registration successful");
+
       setSuccess(res.message);
       setName("");
-    } catch (err) {
-      setError("Registration failed. User may already exist.");
+    } catch (errMsg) {
+      setError(errMsg);
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }
@@ -35,6 +45,8 @@ function Register() {
     <div className="register-container">
       <h2>Create Account</h2>
 
+      <StatusBlock loading={loading} error={error} />
+
       <form onSubmit={handleSubmit}>
         <div className="register-group">
           <label htmlFor="name">Name</label>
@@ -43,6 +55,7 @@ function Register() {
             type="text"
             placeholder="Enter your name"
             value={name}
+            disabled={loading}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -52,7 +65,6 @@ function Register() {
         </button>
       </form>
 
-      {error && <p className="register-message register-error">{error}</p>}
       {success && (
         <p className="register-message register-success">{success}</p>
       )}

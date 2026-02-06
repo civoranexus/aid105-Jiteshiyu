@@ -1,59 +1,69 @@
 const User = require("../models/User");
 
+const AppError = require("../utils/AppError");
+const catchAsync = require("../utils/catchAsync");
+
 const DEFAULT_EMAIL = "testuser@example.com";
 const DEFAULT_PASSWORD = "password123";
 
-exports.register = async (req, res) => {
-  try {
-    const { name } = req.body;
+exports.register = catchAsync(async (req, res, next) => {
+  const { name } = req.body;
 
-    const existingUser = await User.findOne({ email: DEFAULT_EMAIL });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already registered" });
-    }
+  if (!name || !name.trim()) {
+    return next(new AppError("Name is required", 400));
+  }
 
-    const user = await User.create({
-      name,
-      email: DEFAULT_EMAIL,
-      password: DEFAULT_PASSWORD,
-    });
+  const existingUser = await User.findOne({ email: DEFAULT_EMAIL });
 
-    res.json({
-      message: "User registered successfully",
+  if (existingUser) {
+    return next(new AppError("User already registered", 400));
+  }
+
+  const user = await User.create({
+    name,
+    email: DEFAULT_EMAIL,
+    password: DEFAULT_PASSWORD,
+  });
+
+  res.status(201).json({
+    status: "success",
+    message: "User registered successfully",
+    data: {
       user: {
         id: user._id,
         email: user.email,
         name: user.name,
       },
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Registration failed" });
+    },
+  });
+});
+
+exports.login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(new AppError("Email and password are required", 400));
   }
-};
 
-exports.login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+  if (email !== DEFAULT_EMAIL || password !== DEFAULT_PASSWORD) {
+    return next(new AppError("Invalid credentials", 401));
+  }
 
-    if (email !== DEFAULT_EMAIL || password !== DEFAULT_PASSWORD) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+  const user = await User.findOne({ email: DEFAULT_EMAIL });
 
-    const user = await User.findOne({ email: DEFAULT_EMAIL });
+  if (!user) {
+    return next(new AppError("User not found", 404));
+  }
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json({
-      message: "Login successful",
+  res.status(200).json({
+    status: "success",
+    message: "Login successful",
+    data: {
       user: {
         id: user._id,
         email: user.email,
         name: user.name,
       },
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Login failed" });
-  }
-};
+    },
+  });
+});

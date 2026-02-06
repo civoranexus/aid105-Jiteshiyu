@@ -1,11 +1,15 @@
-const express = require("express");
+import express from "express";
+import {
+  getSchemes,
+  syncSchemes,
+} from "../controllers/schemeController.js";
+
+import { protect } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
-const schemeController = require("../controllers/schemeController");
 
+router.get("/", getSchemes);
 
-router.get("/", schemeController.getSchemes);
+router.post("/sync", protect, syncSchemes);
 
-
-router.post("/sync", schemeController.syncSchemes);
-
-module.exports = router;
+export default router;

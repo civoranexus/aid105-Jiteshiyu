@@ -1,14 +1,18 @@
 import ApplicationProgress from "../models/ApplicationProgress.js";
+import catchAsync from "../utils/catchAsync.js";
 
-export const getProgress = async (req, res) => {
+export const getProgress = catchAsync(async (req, res, next) => {
   const progress = await ApplicationProgress.find({
     userId: req.user.id,
   }).populate("schemeId");
 
-  res.json(progress);
-};
+  res.status(200).json({
+    status: "success",
+    data: progress,
+  });
+});
 
-export const updateProgress = async (req, res) => {
+export const updateProgress = catchAsync(async (req, res, next) => {
   const { schemeId, status } = req.body;
 
   const progress = await ApplicationProgress.findOneAndUpdate(
@@ -20,5 +24,8 @@ export const updateProgress = async (req, res) => {
     { upsert: true, new: true }
   );
 
-  res.json(progress);
-};
+  res.status(200).json({
+    status: "success",
+    data: progress,
+  });
+});

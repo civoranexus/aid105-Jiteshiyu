@@ -1,31 +1,42 @@
 import { useState } from "react";
-import { loginUser } from "../services/api";
+import toast from "react-hot-toast";
+
+import StatusBlock from "../components/StatusBlock";
+import { loginUser } from "../services/API";
+
 import "./Login.css";
 
 function Login() {
   const [email, setEmail] = useState("testuser@example.com");
   const [password, setPassword] = useState("password123");
+
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
-      setError("Email and password are required");
+      toast.error("Email and password are required");
       return;
     }
 
     setLoading(true);
-    setError("");
+    setError(null);
     setSuccess("");
 
     try {
       const res = await loginUser(email, password);
+
+      toast.success("Login successful");
+
       setSuccess(res.message);
-    } catch (err) {
-      setError("Invalid email or password");
+    } catch (errMsg) {
+      setError(errMsg);
+
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }
@@ -35,6 +46,8 @@ function Login() {
     <div className="login-container">
       <h2>Login</h2>
 
+      <StatusBlock loading={loading} error={error} />
+
       <form onSubmit={handleSubmit}>
         <div className="login-group">
           <label htmlFor="email">Email</label>
@@ -42,6 +55,7 @@ function Login() {
             id="email"
             type="email"
             value={email}
+            disabled={loading}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -52,6 +66,7 @@ function Login() {
             id="password"
             type="password"
             value={password}
+            disabled={loading}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -61,7 +76,6 @@ function Login() {
         </button>
       </form>
 
-      {error && <p className="login-message login-error">{error}</p>}
       {success && <p className="login-message login-success">{success}</p>}
     </div>
   );

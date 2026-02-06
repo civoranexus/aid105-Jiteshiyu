@@ -1,7 +1,18 @@
 import Feedback from "../models/Feedback.js";
 
-export const submitFeedback = async (req, res) => {
+import AppError from "../utils/AppError.js";
+import catchAsync from "../utils/catchAsync.js";
+
+export const submitFeedback = catchAsync(async (req, res, next) => {
+  if (!req.user) {
+    return next(new AppError("Unauthorized access", 401));
+  }
+
   const { schemeId, rating } = req.body;
+
+  if (!schemeId || !rating) {
+    return next(new AppError("schemeId and rating are required", 400));
+  }
 
   const feedback = await Feedback.findOneAndUpdate(
     { userId: req.user.id, schemeId },
@@ -9,11 +20,12 @@ export const submitFeedback = async (req, res) => {
     { upsert: true, new: true }
   );
 
-  res.json({
+  res.status(200).json({
+    status: "success",
     message: "Feedback recorded",
-    feedback,
+    data: feedback,
   });
-};
+});
 
 export const getSchemeFeedbackStats = async (schemeId) => {
   const helpful = await Feedback.countDocuments({

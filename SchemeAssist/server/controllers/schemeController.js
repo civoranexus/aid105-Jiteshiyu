@@ -1,38 +1,119 @@
-const Scheme = require("../models/Scheme");
-const { syncSchemesFromMyScheme } = require("../services/schemeSyncService");
+import axios from "axios";
+import Scheme from "../models/Scheme.js";
 
-exports.getSchemes = async (req, res) => {
-  try {
-    const filters = {};
+import { recommendationSchema } from "../validators/recommendationValidator.js";
+import { filterEligibleSchemes } from "../utils/eligibility.js";
+import { generateExplainabilityReport } from "../utils/explainabilityEngine.js";
+import { getEligibilityBreakdown } from "../utils/breakdown.js";
+import { getSchemeFeedbackStats } from "./feedbackController.js";
 
-    if (req.query.state) filters.state = req.query.state;
-    if (req.query.category) filters.category = req.query.category;
+import AppError from "../utils/AppError.js";
+import catchAsync from "../utils/catchAsync.js";
 
-    const schemes = await Scheme.find(filters).sort({ name: 1 });
+export const getRecommendations = catchAsync(async (req, res, next) => {
+  const { error } = recommendationSchema.validate(req.body);
 
-    res.json(schemes);
-  } catch (err) {
-    console.error("Get schemes error:", err);
-    res.status(500).json({ message: "Failed to fetch schemes" });
+  if (error) {
+    return next(
+      new AppError(error.details[0].message, 400)
+    );
   }
-};
 
-exports.syncSchemes = async (req, res) => {
-  try {
-    if (!req.user || req.user.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
-    }
+  const schemes = await Scheme.find();
 
-    const result = await syncSchemesFromMyScheme();
+  const eligibleSchemes = filterEligibleSchemes(schemes, req.body);
 
-    res.json({
-      message: "Schemes synced successfully",
-      inserted: result.inserted,
-      updated: result.updated,
-      totalFetched: result.total,
+  if (eligibleSchemes.length === 0) {
+    return res.status(200).json({
+      status: "success",
+      data: {
+        recommendations: [],
+      },
     });
-  } catch (err) {
-    console.error("Sync schemes error:", err);
-    res.status(500).json({ message: "Scheme sync failed" });
   }
-};
+
+  const mlPayload = {
+    user_profile: req.body,
+    eligible_schemes: eligibleSchemes.map((s) => ({
+      scheme_id: s._id.toString(),
+      features: {
+        minIncome: s.minIncome,
+        maxIncome: s.maxIncome,
+      },
+    })),
+  };
+
+  let mlResponse;
+
+  try {
+    mlResponse = await axios.post(
+      "http://127.0.0.1:8001/predict",
+      mlPayload,
+      { timeout: 3000 }
+    );
+  } catch (err) {
+    return next(
+      new AppError(
+        "ML Recommendation service unavailable",
+        503
+      )
+    );
+  }
+
+  const ranked = mlResponse.data.ranked_schemes;
+
+  const recommendations = await Promise.all(
+    ranked.map(async (r) => {
+      const scheme = eligibleSchemes.find(
+        (s) => s._id.toString() === r.scheme_id
+      );
+
+      if (!scheme) return null;
+
+      const stats = await getSchemeFeedbackStats(scheme._id);
+
+      const feedbackBoost =
+        stats.helpful * 0.02 - stats.notHelpful * 0.02;
+
+      const finalScore = r.score + feedbackBoost;
+
+      const breakdown = getEligibilityBreakdown(scheme, req.body);
+
+      const explainReport = generateExplainabilityReport(
+        scheme,
+        req.body
+      );
+
+      return {
+        scheme_id: scheme._id,
+        scheme_name: scheme.name,
+
+        ml_score: r.score,
+        feedback_boost: feedbackBoost,
+        final_score: finalScore,
+
+        feedback: stats,
+
+        reason: explainReport.summary,
+        overall_match: explainReport.overall_match,
+        explainability: explainReport.factors,
+
+        eligibility: breakdown,
+      };
+    })
+  );
+
+  const cleanRecommendations = recommendations.filter(Boolean);
+
+  cleanRecommendations.sort(
+    (a, b) => b.final_score - a.final_score
+  );
+
+  res.status(200).json({
+    status: "success",
+    results: cleanRecommendations.length,
+    data: {
+      recommendations: cleanRecommendations,
+    },
+  });
+});

@@ -4,6 +4,7 @@ import {
   removeFromWatchlist,
   getWatchlist,
 } from "../controllers/watchlistController.js";
+
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();

@@ -42,13 +42,20 @@ export const getRecommendations = async (req, res) => {
 
     const ranked = mlResponse.data.ranked_schemes;
 
-    const recommendations = ranked
-      .map((r) => {
+    const recommendations = await Promise.all(
+      ranked.map(async (r) => {
         const scheme = eligibleSchemes.find(
           (s) => s._id.toString() === r.scheme_id
         );
 
         if (!scheme) return null;
+
+        const stats = await getSchemeFeedbackStats(scheme._id);
+
+        const feedbackBoost =
+          stats.helpful * 0.02 - stats.notHelpful * 0.02;
+
+        const finalScore = r.score + feedbackBoost;
 
         const breakdown = getEligibilityBreakdown(scheme, req.body);
 
@@ -60,7 +67,12 @@ export const getRecommendations = async (req, res) => {
         return {
           scheme_id: scheme._id,
           scheme_name: scheme.name,
-          score: r.score,
+
+          ml_score: r.score,
+          feedback_boost: feedbackBoost,
+          final_score: finalScore,
+
+          feedback: stats,
 
           reason: explainReport.summary,
           overall_match: explainReport.overall_match,
@@ -69,9 +81,15 @@ export const getRecommendations = async (req, res) => {
           eligibility: breakdown,
         };
       })
-      .filter(Boolean);
+    );
 
-    return res.json({ recommendations });
+    const cleanRecommendations = recommendations.filter(Boolean);
+
+    cleanRecommendations.sort(
+      (a, b) => b.final_score - a.final_score
+    );
+
+    return res.json({ recommendations: cleanRecommendations });
 
   } catch (err) {
     console.error("Recommendation Error:", err.message);

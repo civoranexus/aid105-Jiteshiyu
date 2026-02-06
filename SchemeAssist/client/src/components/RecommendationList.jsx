@@ -22,13 +22,26 @@ const RecommendationList = ({ recommendations }) => {
     <div className="recommendation-list">
       {recommendations.map((rec) => {
         const eligibility = rec.eligibility || { matched: [], unmet: [] };
+
         const explainability = Array.isArray(rec.explainability)
           ? rec.explainability
           : [];
 
+        const feedback = rec.feedback || {
+          helpful: 0,
+          notHelpful: 0,
+        };
+
         return (
           <div key={rec.scheme_id} className="scheme-card">
             <h3>{rec.scheme_name}</h3>
+
+            <p className="final-score">
+              <strong>Final Score:</strong>{" "}
+              {rec.final_score !== undefined
+                ? rec.final_score.toFixed(2)
+                : "N/A"}
+            </p>
 
             <p>
               <strong>Why recommended:</strong>{" "}
@@ -55,7 +68,6 @@ const RecommendationList = ({ recommendations }) => {
               )}
             </div>
 
-            {/* ✅ Explainability */}
             {explainability.length > 0 && (
               <div className="explainability-box">
                 <p className="match-score">
@@ -82,6 +94,12 @@ const RecommendationList = ({ recommendations }) => {
                 </ul>
               </div>
             )}
+
+            <p className="feedback-stats">
+              👍 {feedback.helpful} | 👎 {feedback.notHelpful}
+            </p>
+
+            <FeedbackButtons schemeId={rec.scheme_id} />
 
             <button
               className="scheme-card__save"

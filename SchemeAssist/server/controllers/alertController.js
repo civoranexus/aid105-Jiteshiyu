@@ -1,17 +1,31 @@
 import Alert from "../models/Alert.js";
+import AppError from "../utils/AppError.js";
+import catchAsync from "../utils/catchAsync.js";
 
-export const getAlerts = async (req, res) => {
+export const getAlerts = catchAsync(async (req, res, next) => {
   const alerts = await Alert.find({ userId: req.user.id })
     .sort({ createdAt: -1 })
     .populate("schemeId");
 
-  res.json(alerts);
-};
-
-export const markAlertRead = async (req, res) => {
-  await Alert.findByIdAndUpdate(req.params.id, {
-    isRead: true,
+  res.status(200).json({
+    status: "success",
+    data: alerts,
   });
+});
 
-  res.json({ message: "Alert marked as read" });
-};
+export const markAlertRead = catchAsync(async (req, res, next) => {
+  const alert = await Alert.findByIdAndUpdate(
+    req.params.id,
+    { isRead: true },
+    { new: true }
+  );
+
+  if (!alert) {
+    return next(new AppError("Alert not found", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Alert marked as read",
+  });
+});

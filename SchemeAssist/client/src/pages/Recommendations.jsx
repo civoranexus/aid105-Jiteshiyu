@@ -1,6 +1,10 @@
 import { useState } from "react";
-import api from "../services/api";
+import toast from "react-hot-toast";
+
+import api from "../services/API";
+import StatusBlock from "../components/StatusBlock";
 import RecommendationList from "../components/RecommendationList";
+
 import "./Recommendations.css";
 
 import { CATEGORIES } from "../constants/categories";
@@ -17,29 +21,17 @@ const Recommendations = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+
   const [recommendations, setRecommendations] = useState(null);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      !form.age ||
-      !form.annual_income ||
-      !form.category ||
-      !form.state ||
-      !form.education
-    ) {
-      setError("Please fill all fields");
-      return;
-    }
-
+  const fetchRecommendations = async () => {
     setLoading(true);
-    setError("");
+    setError(null);
     setRecommendations(null);
 
     try {
@@ -52,18 +44,43 @@ const Recommendations = () => {
       });
 
       setRecommendations(res.data.recommendations);
-    } catch (err) {
-      setError(
-        err.response?.data?.message || "Service temporarily unavailable"
-      );
+
+      toast.success("Recommendations loaded");
+    } catch (errMsg) {
+      setError(errMsg);
+
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (
+      !form.age ||
+      !form.annual_income ||
+      !form.category ||
+      !form.state ||
+      !form.education
+    ) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    fetchRecommendations();
+  };
+
   return (
     <div className="recommendations-container">
       <h2>Find Recommended Schemes</h2>
+
+      <StatusBlock
+        loading={loading}
+        error={error}
+        onRetry={fetchRecommendations}
+      />
 
       <form className="recommendation-form" onSubmit={handleSubmit}>
         <input
@@ -71,6 +88,7 @@ const Recommendations = () => {
           name="age"
           placeholder="Age"
           value={form.age}
+          disabled={loading}
           onChange={handleChange}
           required
         />
@@ -80,6 +98,7 @@ const Recommendations = () => {
           name="annual_income"
           placeholder="Annual Income (₹)"
           value={form.annual_income}
+          disabled={loading}
           onChange={handleChange}
           required
         />
@@ -87,6 +106,7 @@ const Recommendations = () => {
         <select
           name="category"
           value={form.category}
+          disabled={loading}
           onChange={handleChange}
           required
         >
@@ -101,6 +121,7 @@ const Recommendations = () => {
         <select
           name="education"
           value={form.education}
+          disabled={loading}
           onChange={handleChange}
           required
         >
@@ -115,6 +136,7 @@ const Recommendations = () => {
         <select
           name="state"
           value={form.state}
+          disabled={loading}
           onChange={handleChange}
           required
         >
@@ -130,8 +152,6 @@ const Recommendations = () => {
           {loading ? "Finding Schemes..." : "Get Recommendations"}
         </button>
       </form>
-
-      {error && <p className="error-text">{error}</p>}
 
       <RecommendationList recommendations={recommendations} />
     </div>

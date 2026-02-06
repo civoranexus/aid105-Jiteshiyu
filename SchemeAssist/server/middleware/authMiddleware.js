@@ -1,19 +1,30 @@
 import jwt from "jsonwebtoken";
+import AppError from "../utils/AppError.js";
 
 export const protect = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Not authorized" });
+    return next(new AppError("Unauthorized: Token missing", 401));
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!process.env.JWT_SECRET) {
+    return next(new AppError("JWT secret not configured", 500));
   }
 
   try {
-    const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = decoded;
+
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+    if (err.name === "TokenExpiredError") {
+      return next(new AppError("Session expired. Please login again.", 401));
+    }
+
+    return next(new AppError("Invalid token. Access denied.", 401));
   }
 };

@@ -12,16 +12,20 @@ import Terms from "./pages/Terms";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { Toaster } from "react-hot-toast";
 
 import Recommendations from "./pages/Recommendations";
 import ComparePage from "./pages/ComparePage";
 import Watchlist from "./pages/Watchlist";
 import Progress from "./pages/Progress";
 import Alerts from "./pages/Alerts";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <>
+      <Toaster position="top-right" />
+
       <Navbar />
 
       <Routes>
@@ -38,6 +42,7 @@ function App() {
         <Route path="/watchlist" element={<Watchlist />} />
         <Route path="/progress" element={<Progress />} />
         <Route path="/alerts" element={<Alerts />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />

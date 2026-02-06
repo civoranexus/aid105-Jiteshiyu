@@ -1,42 +1,54 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api";
-
-export const fetchSchemes = async () => {
-  const response = await axios.get(`${API_BASE_URL}/schemes`);
-  return response.data;
-};
-
-export async function registerUser(name) {
-  const res = await fetch(`${BASE_URL}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name }),
-  });
-
-  if (!res.ok) throw new Error("Registration failed");
-  return res.json();
-}
-
-export async function loginUser(email, password) {
-  const res = await fetch(`${BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!res.ok) throw new Error("Login failed");
-  return res.json();
-}
-
-export const api = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:5000/api",
+  timeout: 10000,
 });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    let message = "Something went wrong";
+
+    if (error.response) {
+      message =
+        error.response.data?.message ||
+        `Server Error (${error.response.status})`;
+    } else if (error.request) {
+      message = "No response from server. Check internet.";
+    } else {
+      message = error.message;
+    }
+
+    console.error("🔥 API ERROR:", message);
+
+    return Promise.reject(message);
+  }
+);
+
+export const fetchSchemes = async () => {
+  const res = await api.get("/schemes");
+  return res.data;
+};
+
+export const registerUser = async (name) => {
+  const res = await api.post("/auth/register", { name });
+  return res.data;
+};
+
+export const loginUser = async (email, password) => {
+  const res = await api.post("/auth/login", { email, password });
+  return res.data;
+};
+
+export default api;

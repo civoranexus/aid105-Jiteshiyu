@@ -1,37 +1,45 @@
 import { useEffect, useState } from "react";
-import { fetchSchemes } from "../services/api";
+import toast from "react-hot-toast";
+
+import StatusBlock from "../components/StatusBlock";
+
+import { fetchSchemes } from "../services/API";
 import { addToWatchlistApi } from "../services/watchlistApi";
+
 import "./Schemes.css";
 
 function Schemes() {
   const [schemes, setSchemes] = useState([]);
+
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
+
+  const loadSchemes = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await fetchSchemes();
+      setSchemes(data);
+    } catch (errMsg) {
+      setError(errMsg);
+      toast.error("Failed to load schemes");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadSchemes = async () => {
-      try {
-        const data = await fetchSchemes();
-        setSchemes(data);
-      } catch (err) {
-        console.error("Failed to fetch schemes:", err);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadSchemes();
   }, []);
 
   const handleSave = async (schemeId) => {
     try {
       await addToWatchlistApi(schemeId);
-      alert("Added to watchlist");
-    } catch (err) {
-      alert(
-        err.response?.data?.message || "Failed to add to watchlist"
-      );
+
+      toast.success("Added to watchlist");
+    } catch (errMsg) {
+      toast.error(errMsg);
     }
   };
 
@@ -39,13 +47,11 @@ function Schemes() {
     <main className="schemes">
       <h1>Available Government Schemes</h1>
 
-      {loading && <p>Loading schemes...</p>}
-
-      {error && (
-        <p className="schemes__error">
-          Unable to load schemes at the moment. Please try again later.
-        </p>
-      )}
+      <StatusBlock
+        loading={loading}
+        error={error}
+        onRetry={loadSchemes}
+      />
 
       {!loading && !error && schemes.length === 0 && (
         <p>No schemes are currently available.</p>
@@ -63,9 +69,7 @@ function Schemes() {
                 </p>
               )}
 
-              {scheme.description && (
-                <p>{scheme.description}</p>
-              )}
+              {scheme.description && <p>{scheme.description}</p>}
 
               {scheme.benefits && (
                 <p>
@@ -89,6 +93,7 @@ function Schemes() {
 
               <button
                 className="scheme-card__save"
+                disabled={loading}
                 onClick={() => handleSave(scheme._id)}
               >
                 Save to Watchlist
