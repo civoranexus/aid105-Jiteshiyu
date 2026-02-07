@@ -1,6 +1,8 @@
 import { addToWatchlistApi } from "../services/watchlistApi";
 import FeedbackButtons from "./FeedbackButtons";
 import "./RecommendationList.css";
+import Button from "../components/ui/Button";
+import Page from "../components/Page";
 
 const RecommendationList = ({ recommendations }) => {
   if (!recommendations) return null;
@@ -19,6 +21,7 @@ const RecommendationList = ({ recommendations }) => {
   };
 
   return (
+    <Page>
     <div className="recommendation-list">
       {recommendations.map((rec) => {
         const eligibility = rec.eligibility || { matched: [], unmet: [] };
@@ -101,16 +104,17 @@ const RecommendationList = ({ recommendations }) => {
 
             <FeedbackButtons schemeId={rec.scheme_id} />
 
-            <button
+            <Button
               className="scheme-card__save"
               onClick={() => handleSave(rec.scheme_id)}
             >
               Save to Watchlist
-            </button>
+            </Button>
           </div>
         );
       })}
     </div>
+    </Page>
   );
 };
 

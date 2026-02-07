@@ -1,7 +1,9 @@
 import "./ApplicationSteps.css";
+import Page from "../components/Page";
 
 const ApplicationSteps = ({ data }) => {
   return (
+    <Page>
     <div className="application-section">
       <h4>How to Apply</h4>
 
@@ -28,6 +30,7 @@ const ApplicationSteps = ({ data }) => {
         Go to Official Portal
       </a>
     </div>
+    </Page>
   );
 };
 

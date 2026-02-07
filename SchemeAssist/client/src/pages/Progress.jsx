@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchProgressApi } from "../services/progressApi";
 import ProgressTracker from "../components/ProgressTracker";
 import "./Progress.css";
+import Page from "../components/Page";
 
 const Progress = () => {
   const [items, setItems] = useState([]);
@@ -25,6 +26,7 @@ const Progress = () => {
     }
 
   return (
+    <Page>
     <div className="progress-page">
     <h2 className="progress-title">Application Progress</h2>
 
@@ -42,6 +44,7 @@ const Progress = () => {
       </div>
     ))}
     </div>
+    </Page>
   );
 
 };

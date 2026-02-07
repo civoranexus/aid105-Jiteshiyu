@@ -1,5 +1,6 @@
 import { updateProgressApi } from "../services/progressApi";
 import "./ProgressTracker.css";
+import Page from "../components/Page";
 
 const STATUSES = [
   "Not Started",
@@ -17,6 +18,7 @@ const ProgressTracker = ({ schemeId, currentStatus, onUpdate }) => {
   };
 
   return (
+    <Page>
     <select
         value={currentStatus}
         onChange={handleChange}
@@ -28,6 +30,7 @@ const ProgressTracker = ({ schemeId, currentStatus, onUpdate }) => {
         </option>
       ))}
     </select>
+    </Page>
   );
 };
 

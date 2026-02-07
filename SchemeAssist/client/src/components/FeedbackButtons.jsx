@@ -1,4 +1,5 @@
 import { submitFeedbackApi } from "../services/feedbackApi";
+import Button from "../components/ui/Button";
 
 const FeedbackButtons = ({ schemeId }) => {
   const handleFeedback = async (rating) => {
@@ -8,13 +9,13 @@ const FeedbackButtons = ({ schemeId }) => {
 
   return (
     <div style={{ marginTop: "10px" }}>
-      <button onClick={() => handleFeedback("HELPFUL")}>
+      <Button onClick={() => handleFeedback("HELPFUL")}>
         👍 Helpful
-      </button>
+      </Button>
 
-      <button onClick={() => handleFeedback("NOT_HELPFUL")}>
+      <Button onClick={() => handleFeedback("NOT_HELPFUL")}>
         👎 Not Helpful
-      </button>
+      </Button>
     </div>
   );
 };

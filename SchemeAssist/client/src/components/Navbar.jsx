@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import Button from "../components/ui/Button";
 
 function Navbar() {
   return (
@@ -44,9 +45,9 @@ function Navbar() {
       </nav>
 
       <div className="navbar__actions">
-        <button className="btn btn-outline">
+        <Button className="btn btn-outline">
           Sign In
-        </button>
+        </Button>
       </div>
     </header>
   );

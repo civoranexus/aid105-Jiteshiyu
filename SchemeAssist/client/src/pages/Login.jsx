@@ -3,8 +3,10 @@ import toast from "react-hot-toast";
 
 import StatusBlock from "../components/StatusBlock";
 import { loginUser } from "../services/API";
+import Button from "../components/ui/Button";
 
 import "./Login.css";
+import Page from "../components/Page";
 
 function Login() {
   const [email, setEmail] = useState("testuser@example.com");
@@ -43,6 +45,7 @@ function Login() {
   };
 
   return (
+    <Page>
     <div className="login-container">
       <h2>Login</h2>
 
@@ -71,13 +74,14 @@ function Login() {
           />
         </div>
 
-        <button className="login-button" disabled={loading}>
+        <Button className="login-button" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
-        </button>
+        </Button>
       </form>
 
       {success && <p className="login-message login-success">{success}</p>}
     </div>
+    </Page>
   );
 }
 

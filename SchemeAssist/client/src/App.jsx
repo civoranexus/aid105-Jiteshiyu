@@ -13,6 +13,7 @@ import Terms from "./pages/Terms";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { Toaster } from "react-hot-toast";
+import Layout from "./components/Layout";
 
 import Recommendations from "./pages/Recommendations";
 import ComparePage from "./pages/ComparePage";
@@ -28,22 +29,24 @@ function App() {
 
       <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/schemes" element={<Schemes />} />
-        <Route path="/disclaimer" element={<Disclaimer />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/recommendations" element={<Recommendations />} />
-        <Route path="/compare" element={<ComparePage />} />
-        <Route path="/watchlist" element={<Watchlist />} />
-        <Route path="/progress" element={<Progress />} />
-        <Route path="/alerts" element={<Alerts />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/schemes" element={<Schemes />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/recommendations" element={<Recommendations />} />
+          <Route path="/compare" element={<ComparePage />} />
+          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/progress" element={<Progress />} />
+          <Route path="/alerts" element={<Alerts />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
 
       <Footer />
     </>

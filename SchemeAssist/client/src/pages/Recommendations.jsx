@@ -6,10 +6,12 @@ import StatusBlock from "../components/StatusBlock";
 import RecommendationList from "../components/RecommendationList";
 
 import "./Recommendations.css";
+import Button from "../components/ui/Button";
 
 import { CATEGORIES } from "../constants/categories";
 import { EDUCATION_LEVELS } from "../constants/educationLevels";
 import { STATES } from "../constants/states";
+import Page from "../components/Page";
 
 const Recommendations = () => {
   const [form, setForm] = useState({
@@ -73,6 +75,7 @@ const Recommendations = () => {
   };
 
   return (
+    <Page>
     <div className="recommendations-container">
       <h2>Find Recommended Schemes</h2>
 
@@ -148,13 +151,14 @@ const Recommendations = () => {
           ))}
         </select>
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           {loading ? "Finding Schemes..." : "Get Recommendations"}
-        </button>
+        </Button>
       </form>
 
       <RecommendationList recommendations={recommendations} />
     </div>
+    </Page>
   );
 };
 

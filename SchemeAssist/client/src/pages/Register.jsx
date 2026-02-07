@@ -5,6 +5,8 @@ import StatusBlock from "../components/StatusBlock";
 import { registerUser } from "../services/API";
 
 import "./Register.css";
+import Button from "../components/ui/Button";
+import Page from "../components/Page";
 
 function Register() {
   const [name, setName] = useState("");
@@ -42,6 +44,7 @@ function Register() {
   };
 
   return (
+    <Page>
     <div className="register-container">
       <h2>Create Account</h2>
 
@@ -60,15 +63,16 @@ function Register() {
           />
         </div>
 
-        <button className="register-button" disabled={loading}>
+        <Button className="register-button" disabled={loading}>
           {loading ? "Registering..." : "Register"}
-        </button>
+        </Button>
       </form>
 
       {success && (
         <p className="register-message register-success">{success}</p>
       )}
     </div>
+    </Page>
   );
 }
 

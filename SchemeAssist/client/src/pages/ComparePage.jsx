@@ -3,6 +3,7 @@ import CompareSelector from "../components/CompareSelector";
 import ComparisonTable from "../components/ComparisonTable";
 import { compareSchemesApi } from "../services/comparisonApi";
 import { fetchSchemes } from "../services/schemeApi";
+import Page from "../components/Page";
 
 const ComparePage = () => {
   const [schemes, setSchemes] = useState([]);
@@ -24,6 +25,7 @@ const ComparePage = () => {
   if (loading) return <p>Loading schemes...</p>;
 
   return (
+    <Page>
     <div>
       <h2>Scheme Comparison</h2>
 
@@ -31,6 +33,7 @@ const ComparePage = () => {
 
       <ComparisonTable schemes={result} />
     </div>
+    </Page>
   );
 };
 

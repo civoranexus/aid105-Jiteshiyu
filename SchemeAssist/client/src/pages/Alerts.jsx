@@ -4,6 +4,8 @@ import {
   markAlertReadApi,
 } from "../services/alertApi";
 import "./Alerts.css";
+import Button from "../components/ui/Button";
+import Page from "../components/Page";
 
 const Alerts = () => {
   const [alerts, setAlerts] = useState([]);
@@ -26,6 +28,8 @@ const Alerts = () => {
   }
 
   return (
+    <Page>
+
     <div className="alerts-container">
       <h2>Alerts</h2>
 
@@ -39,13 +43,15 @@ const Alerts = () => {
           <p>{alert.message}</p>
 
           {!alert.isRead && (
-            <button onClick={() => markRead(alert._id)}>
+            <Button onClick={() => markRead(alert._id)}>
               Mark as read
-            </button>
+            </Button>
           )}
         </div>
       ))}
     </div>
+    </Page>
+
   );
 };
 

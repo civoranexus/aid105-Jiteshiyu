@@ -4,6 +4,8 @@ import {
   removeFromWatchlistApi,
 } from "../services/watchlistApi";
 import "./Watchlist.css";
+import Button from "../components/ui/Button";
+import Page from "../components/Page";
 
 const Watchlist = () => {
   const [schemes, setSchemes] = useState([]);
@@ -18,6 +20,7 @@ const Watchlist = () => {
   };
 
   return (
+    <Page>
     <div className="watchlist-container">
       <h2>Your Watchlist</h2>
 
@@ -31,15 +34,16 @@ const Watchlist = () => {
         <div key={s._id} className="watchlist-item">
           <h4>{s.name}</h4>
 
-          <button
+          <Button
             className="watchlist-remove"
             onClick={() => removeScheme(s._id)}
           >
             Remove
-          </button>
+          </Button>
         </div>
       ))}
     </div>
+    </Page>
   );
 };
 

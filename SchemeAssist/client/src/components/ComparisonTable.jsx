@@ -1,4 +1,5 @@
 import "./ComparisonTable.css";
+import Page from "../components/Page";
 
 const Row = ({ label, values }) => (
   <tr>
@@ -13,6 +14,7 @@ const ComparisonTable = ({ schemes }) => {
   if (!schemes?.length) return null;
 
   return (
+    <Page>
     <table className="cmp-table">
       <thead>
         <tr>
@@ -37,6 +39,7 @@ const ComparisonTable = ({ schemes }) => {
         />
       </tbody>
     </table>
+    </Page>
   );
 };
 

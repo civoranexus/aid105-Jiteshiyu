@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Button from "../components/ui/Button";
+import Page from "../components/Page";
 
 const CompareSelector = ({ schemes, onCompare }) => {
   const [selected, setSelected] = useState([]);
@@ -14,6 +16,7 @@ const CompareSelector = ({ schemes, onCompare }) => {
   };
 
   return (
+    <Page>
     <div>
       <h4>Select up to 3 schemes</h4>
 
@@ -28,13 +31,14 @@ const CompareSelector = ({ schemes, onCompare }) => {
         </label>
       ))}
 
-      <button
+      <Button
         disabled={selected.length < 2}
         onClick={() => onCompare(selected)}
       >
         Compare Selected
-      </button>
+      </Button>
     </div>
+    </Page>
   );
 };
 

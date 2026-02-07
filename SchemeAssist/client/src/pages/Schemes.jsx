@@ -7,6 +7,8 @@ import { fetchSchemes } from "../services/API";
 import { addToWatchlistApi } from "../services/watchlistApi";
 
 import "./Schemes.css";
+import Button from "../components/ui/Button";
+import Page from "../components/Page";
 
 function Schemes() {
   const [schemes, setSchemes] = useState([]);
@@ -44,6 +46,7 @@ function Schemes() {
   };
 
   return (
+    <Page>
     <main className="schemes">
       <h1>Available Government Schemes</h1>
 
@@ -91,18 +94,19 @@ function Schemes() {
                 )}
               </div>
 
-              <button
+              <Button
                 className="scheme-card__save"
                 disabled={loading}
                 onClick={() => handleSave(scheme._id)}
               >
                 Save to Watchlist
-              </button>
+              </Button>
             </div>
           ))}
         </div>
       )}
     </main>
+    </Page>
   );
 }
 
