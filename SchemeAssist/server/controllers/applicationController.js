@@ -1,5 +1,4 @@
 import SchemeApplication from "../models/SchemeApplication.js";
-import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
 
 export const getApplicationProcess = catchAsync(async (req, res, next) => {
