@@ -1,6 +1,5 @@
 import Feedback from "../models/Feedback.js";
 
-import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
 
 export const submitFeedback = catchAsync(async (req, res, next) => {
