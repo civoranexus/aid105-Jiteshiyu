@@ -1,6 +1,5 @@
 import Scheme from "../models/Scheme.js";
 import SchemeApplication from "../models/SchemeApplication.js";
-import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
 
 export const compareSchemes = catchAsync(async (req, res, next) => {
