@@ -19,16 +19,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const AppError = require("./utils/AppError");
-
-app.all("*", (req, res, next) => {
-  next(new AppError(`Route ${req.originalUrl} not found`, 404));
-});
-
-app.get("/", (req, res) => {
-  res.json({ message: "SchemeAssist API running" });
-});
-
 app.use("/api/auth", authRoutes);
 app.use("/api/schemes", schemeRoutes);
 app.use("/api/recommendations", recommendationRoutes);
