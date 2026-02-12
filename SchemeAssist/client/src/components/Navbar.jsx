@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-import Button from "../components/ui/Button";
 
 function Navbar() {
   return (
@@ -44,11 +43,15 @@ function Navbar() {
         </NavLink>
       </nav>
 
-      <div className="navbar__actions">
-        <Button className="btn btn-outline">
-          Sign In
-        </Button>
-      </div>
+      <div className="navbar__actions s-btn">
+  <NavLink to="/register">
+    <button className="navbar-signin-btn">
+      Sign In
+    </button>
+  </NavLink>
+
+</div>
+
     </header>
   );
 }
