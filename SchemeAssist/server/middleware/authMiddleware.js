@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import AppError from "../utils/AppError.js";
 
 export const protect = (req, res, next) => {
   const authHeader = req.headers.authorization;
