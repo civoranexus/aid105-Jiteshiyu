@@ -1,6 +1,5 @@
 import User from "../models/User.js";
 import Scheme from "../models/Scheme.js";
-import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
 
 export const addToWatchlist = catchAsync(async (req, res, next) => {
