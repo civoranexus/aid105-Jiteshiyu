@@ -1,10 +1,15 @@
 import axios from "axios";
-import { recommendationSchema } from "../validators/recommendationValidator.js";
-import { filterEligibleSchemes } from "../utils/eligibility.js";
-import { generateExplainabilityReport } from "../utils/explainabilityEngine.js";
-import { getEligibilityBreakdown } from "../utils/breakdown.js";
-import { getSchemeFeedbackStats } from "./feedbackController.js";
 import Scheme from "../models/Scheme.js";
+
+import { recommendationSchema } from "../validators/recommendationValidator.js";
+
+import {
+  filterEligibleSchemes,
+  getEligibilityBreakdown,
+} from "../utils/eligibilityBreakdown.js";
+
+import { generateExplainabilityReport } from "../utils/explainabilityEngine.js";
+import { getSchemeFeedbackStats } from "./feedbackController.js";
 
 export const getRecommendations = async (req, res) => {
   const { error } = recommendationSchema.validate(req.body);
@@ -83,13 +88,13 @@ export const getRecommendations = async (req, res) => {
       })
     );
 
-    const cleanRecommendations = recommendations.filter(Boolean);
+    const cleanRecommendations = recommendations
+      .filter(Boolean)
+      .sort((a, b) => b.final_score - a.final_score);
 
-    cleanRecommendations.sort(
-      (a, b) => b.final_score - a.final_score
-    );
-
-    return res.json({ recommendations: cleanRecommendations });
+    return res.json({
+      recommendations: cleanRecommendations,
+    });
 
   } catch (err) {
     console.error("Recommendation Error:", err.message);
