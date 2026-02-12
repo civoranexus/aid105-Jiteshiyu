@@ -1,6 +1,5 @@
 const User = require("../models/User");
 
-const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 
 const DEFAULT_EMAIL = "testuser@example.com";
