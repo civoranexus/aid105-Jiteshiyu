@@ -1,0 +1,20 @@
+.scheme-details-container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.scheme-details-container h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.scheme-details-container .loading-text {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.scheme-details-container .error-text {
+  color: #b91c1c;
+  font-size: 14px;
+}

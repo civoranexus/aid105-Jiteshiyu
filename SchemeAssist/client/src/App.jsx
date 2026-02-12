@@ -1,0 +1,56 @@
+import { Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Schemes from "./pages/Schemes";
+import Disclaimer from "./pages/Disclaimer";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import { Toaster } from "react-hot-toast";
+import Layout from "./components/Layout";
+
+import Recommendations from "./pages/Recommendations";
+import ComparePage from "./pages/ComparePage";
+import Watchlist from "./pages/Watchlist";
+import Progress from "./pages/Progress";
+import Alerts from "./pages/Alerts";
+import NotFound from "./pages/NotFound";
+
+function App() {
+  return (
+    <>
+      <Toaster position="top-right" />
+
+      <Navbar />
+
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/schemes" element={<Schemes />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/recommendations" element={<Recommendations />} />
+          <Route path="/compare" element={<ComparePage />} />
+          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/progress" element={<Progress />} />
+          <Route path="/alerts" element={<Alerts />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
+
+      <Footer />
+    </>
+  );
+}
+
+export default App;

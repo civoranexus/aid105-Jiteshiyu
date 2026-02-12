@@ -1,0 +1,64 @@
+.schemes {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.schemes h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #111827;
+}
+
+.schemes__error {
+  color: #b91c1c;
+}
+
+.schemes__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.scheme-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: #ffffff;
+}
+
+.scheme-card__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  color: #111827;
+}
+
+.scheme-card__description {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 0.8rem;
+}
+
+.scheme-card__eligibility ul {
+  padding-left: 1.2rem;
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+}
+
+.scheme-card__benefits {
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+}
+
+.scheme-card__link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.scheme-card__link:hover {
+  text-decoration: underline;
+}

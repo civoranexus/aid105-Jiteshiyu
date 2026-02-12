@@ -1,0 +1,24 @@
+.alerts-container {
+  max-width: 700px;
+  margin: 30px auto;
+}
+
+.alert-item {
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.alert-item.unread {
+  background-color: #eff6ff;
+}
+
+.alert-item.read {
+  background-color: #f9fafb;
+}
+
+.alert-item button {
+  margin-top: 6px;
+  font-size: 13px;
+}

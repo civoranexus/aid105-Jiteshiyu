@@ -1,0 +1,17 @@
+.cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.cmp-table th,
+.cmp-table td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.cmp-label {
+  font-weight: 600;
+  background: #f9fafb;
+}

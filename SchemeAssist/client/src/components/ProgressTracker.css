@@ -1,0 +1,37 @@
+.progress-select {
+  width: 220px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #d0d5dd;
+  background-color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.progress-select:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+/* Status-based colors */
+.progress-select.not-started {
+  color: #6b7280;
+}
+
+.progress-select.applied {
+  color: #2563eb;
+}
+
+.progress-select.under-review {
+  color: #d97706;
+}
+
+.progress-select.approved {
+  color: #16a34a;
+}
+
+.progress-select.rejected {
+  color: #dc2626;
+}
